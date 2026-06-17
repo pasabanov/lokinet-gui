@@ -31,25 +31,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build pack
-        run: yarn pack
-
-      - name: Upload pack (Ubuntu)
-        if: runner.os == 'Linux'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: lokinet-gui-ubuntu-pack
-          path: lokinet-gui-*.tgz
-          if-no-files-found: error
-
-      - name: Upload pack (Windows)
-        if: runner.os == 'Windows'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: lokinet-gui-windows-pack
-          path: lokinet-gui-*.tgz
-          if-no-files-found: error
-
       - name: Build AppImage (Ubuntu)
         if: runner.os == 'Linux'
         run: yarn appImage
