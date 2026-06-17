@@ -14,17 +14,17 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            build_script: appImage
             artifact_name: lokinet-gui-ubuntu-latest
-            artifact_path: release/*.AppImage
-          - os: macos-latest
-            build_script: macos
-            artifact_name: lokinet-gui-macos-latest
-            artifact_path: release/*.dmg
+            artifact_path: |
+              release/linux-unpacked/**
+              release/*.AppImage
+              release/*.deb
           - os: windows-latest
             build_script: win32
             artifact_name: lokinet-gui-windows-latest
-            artifact_path: release/*portable.exe
+            artifact_path: |
+              release/win-unpacked/**
+              release/*portable.exe
 
     steps:
       - name: Checkout code
@@ -37,19 +37,25 @@ jobs:
         with:
           node-version: 16.13.0
 
-      - name: Setup Python 3.11 (macOS)
-        if: runner.os == 'macOS'
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: '3.11.9'
-
       - name: Setup Yarn
         run: npm install -g yarn@1.22.22
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build
+      - name: Build pack
+        run: yarn pack
+
+      - name: Build AppImage (Ubuntu)
+        if: runner.os == 'Linux'
+        run: yarn appImage
+
+      - name: Build deb (Ubuntu)
+        if: runner.os == 'Linux'
+        run: yarn deb
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
         run: yarn ${{ matrix.build_script }}
 
       - name: Upload binaries
