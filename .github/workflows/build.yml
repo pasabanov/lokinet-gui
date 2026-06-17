@@ -34,40 +34,12 @@ jobs:
       - name: Build pack
         run: yarn pack
 
-      - name: Build AppImage (Ubuntu)
-        if: runner.os == 'Linux'
-        run: yarn appImage
-
-      - name: Build deb (Ubuntu)
-        if: runner.os == 'Linux'
-        run: yarn deb
-
-      - name: Build exe (Windows)
-        if: runner.os == 'Windows'
-        run: yarn win32
-
       - name: Upload pack (Ubuntu)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: lokinet-gui-ubuntu-pack
           path: release/linux-unpacked/**
-          if-no-files-found: error
-
-      - name: Upload AppImage (Ubuntu)
-        if: runner.os == 'Linux'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: lokinet-gui-ubuntu-appimage
-          path: release/*.AppImage
-          if-no-files-found: error
-
-      - name: Upload deb (Ubuntu)
-        if: runner.os == 'Linux'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: lokinet-gui-ubuntu-deb
-          path: release/*.deb
           if-no-files-found: error
 
       - name: Upload pack (Windows)
@@ -77,6 +49,34 @@ jobs:
           name: lokinet-gui-windows-pack
           path: release/win-unpacked/**
           if-no-files-found: error
+
+      - name: Build AppImage (Ubuntu)
+        if: runner.os == 'Linux'
+        run: yarn appImage
+
+      - name: Upload AppImage (Ubuntu)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lokinet-gui-ubuntu-appimage
+          path: release/*.AppImage
+          if-no-files-found: error
+
+      - name: Build deb (Ubuntu)
+        if: runner.os == 'Linux'
+        run: yarn deb
+
+      - name: Upload deb (Ubuntu)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lokinet-gui-ubuntu-deb
+          path: release/*.deb
+          if-no-files-found: error
+
+      - name: Build exe (Windows)
+        if: runner.os == 'Windows'
+        run: yarn win32
 
       - name: Upload exe (Windows)
         if: runner.os == 'Windows'
