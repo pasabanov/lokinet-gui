@@ -12,19 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-latest
-            artifact_name: lokinet-gui-ubuntu-latest
-            artifact_path: |
-              release/linux-unpacked/**
-              release/*.AppImage
-              release/*.deb
-          - os: windows-latest
-            build_script: win32
-            artifact_name: lokinet-gui-windows-latest
-            artifact_path: |
-              release/win-unpacked/**
-              release/*portable.exe
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout code
@@ -54,13 +42,46 @@ jobs:
         if: runner.os == 'Linux'
         run: yarn deb
 
-      - name: Build (Windows)
+      - name: Build exe (Windows)
         if: runner.os == 'Windows'
-        run: yarn ${{ matrix.build_script }}
+        run: yarn win32
 
-      - name: Upload binaries
+      - name: Upload pack (Ubuntu)
+        if: runner.os == 'Linux'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: ${{ matrix.artifact_name }}
-          path: ${{ matrix.artifact_path }}
+          name: lokinet-gui-ubuntu-pack
+          path: release/linux-unpacked/**
+          if-no-files-found: error
+
+      - name: Upload AppImage (Ubuntu)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lokinet-gui-ubuntu-appimage
+          path: release/*.AppImage
+          if-no-files-found: error
+
+      - name: Upload deb (Ubuntu)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lokinet-gui-ubuntu-deb
+          path: release/*.deb
+          if-no-files-found: error
+
+      - name: Upload pack (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lokinet-gui-windows-pack
+          path: release/win-unpacked/**
+          if-no-files-found: error
+
+      - name: Upload exe (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lokinet-gui-windows-exe
+          path: release/*portable.exe
           if-no-files-found: error
