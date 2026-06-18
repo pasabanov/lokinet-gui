@@ -7038,6 +7038,7 @@ __metadata:
     framer-motion: "npm:^7.10.3"
     html-webpack-plugin: "npm:^5.6.7"
     lodash: "npm:^4.18.1"
+    node-gyp-build: "npm:^4.8.4"
     patch-package: "npm:^6.5.1"
     postinstall-postinstall: "npm:^2.1.0"
     prettier: "npm:^2.8.8"
@@ -7522,6 +7523,17 @@ __metadata:
   version: 1.4.0
   resolution: "node-forge@npm:1.4.0"
   checksum: 10c0/67330a5f1f95257a4c8a93b7d555abe87b5f15e350123aa396c97a21a8ca94f9c6549008eb2c73668a91e0d7e3a905785acbd8f8bd0751c29401292011f8f8e1
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:^4.8.4":
+  version: 4.8.4
+  resolution: "node-gyp-build@npm:4.8.4"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: 10c0/444e189907ece2081fe60e75368784f7782cfddb554b60123743dfb89509df89f1f29c03bbfa16b3a3e0be3f48799a4783f487da6203245fa5bed239ba7407e1
   languageName: node
   linkType: hard
 
