@@ -1,0 +1,59 @@
+name: Yarn Debug Install
+
+on:
+  push:
+    branches: [ dev ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.16.0
+
+      - name: Enable Corepack (fix Yarn version)
+        run: |
+          corepack enable
+          corepack prepare yarn@4.17.0 --activate
+          yarn --version
+
+      - name: Show environment
+        run: |
+          node --version
+          yarn --version
+          pwd
+          ls -la
+
+      - name: Install dependencies (immutable)
+        run: yarn install --immutable || true
+
+      - name: Dump Yarn diagnostics
+        run: |
+          yarn config list || true
+          yarn explain peer-requirements || true
+          yarn workspaces list || true
+
+      - name: Show lockfile diff
+        run: |
+          git status
+          git diff || true
+
+      - name: Upload yarn artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: yarn-debug
+          path: |
+            yarn.lock
+            package.json
+            .yarn/**
+          if-no-files-found: warn
