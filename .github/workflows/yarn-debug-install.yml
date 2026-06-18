@@ -1,4 +1,4 @@
-name: Yarn Debug Install
+name: Yarn migration debug
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  debug:
+  migrate:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,39 +21,50 @@ jobs:
         with:
           node-version: 24.16.0
 
-      - name: Enable Corepack (fix Yarn version)
+      - name: Enable Corepack and pin Yarn
         run: |
           corepack enable
           corepack prepare yarn@4.17.0 --activate
-          yarn --version
-
-      - name: Show environment
-        run: |
           node --version
           yarn --version
-          pwd
-          ls -la
 
-      - name: Install dependencies (immutable)
-        run: yarn install --immutable || true
-
-      - name: Dump Yarn diagnostics
+      - name: Run yarn install for migration
+        id: yarn_install
+        shell: bash
         run: |
-          yarn config list || true
-          yarn explain peer-requirements || true
-          yarn workspaces list || true
+          mkdir -p artifacts
+          set +e
+          yarn install 2>&1 | tee artifacts/yarn-install.log
+          echo "${PIPESTATUS[0]}" > artifacts/yarn-install.exitcode
+          exit 0
 
-      - name: Show lockfile diff
+      - name: Print diagnostics
+        shell: bash
         run: |
-          git status
-          git diff || true
+          mkdir -p artifacts
+          {
+            echo "=== git status ==="
+            git status --short
+            echo
+            echo "=== git diff ==="
+            git diff -- package.json yarn.lock .yarnrc.yml .yarn
+            echo
+            echo "=== yarn explain peer-requirements ==="
+            yarn explain peer-requirements || true
+            echo
+            echo "=== yarn why redux ==="
+            yarn why redux || true
+          } | tee artifacts/diagnostics.log
 
-      - name: Upload yarn artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: yarn-debug
+          name: yarn-migration-debug
           path: |
-            yarn.lock
+            artifacts/**
             package.json
+            yarn.lock
+            .yarnrc.yml
             .yarn/**
           if-no-files-found: warn
+          include-hidden-files: true
