@@ -34,7 +34,9 @@ jobs:
           corepack prepare yarn@4.17.0 --activate
 
       - name: Install dependencies
-        run: yarn install
+        run: |
+          yarn config set enableImmutableInstalls false
+          yarn install
 
       - name: Build AppImage (Ubuntu)
         if: runner.os == 'Linux'
