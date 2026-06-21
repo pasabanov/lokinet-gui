@@ -75,3 +75,7 @@ patches/mtime-cache.json
 release/
 
 .gdb_history
+
+# Yarn
+/.yarn/install-state.gz
+/.yarnrc.yml
