@@ -32,7 +32,7 @@ export const MainTab = (): JSX.Element => {
       >
         <RoutersStats
           activePaths={numPathsBuilt}
-          ratio={ratio}
+          ratio={String(ratio)}
           numRouters={numRoutersKnown}
         />
         <SpeedStats />

@@ -173,7 +173,7 @@ export const UpSpeedWithPillAndIcon = (): JSX.Element => {
       pillColor={theme.connectedVpnModeColor}
       icon={<UploadInlineIcon size="15px" />}
       label="Upload"
-      value={upSpeed}
+      value={String(upSpeed)}
     />
   );
 };
@@ -187,7 +187,7 @@ export const DownSpeedWithPillAndIcon = (): JSX.Element => {
       pillColor={theme.dangerColor}
       icon={<DownloadInlineIcon size="15px" />}
       label="Download"
-      value={downSpeed}
+      value={String(downSpeed)}
     />
   );
 };
@@ -214,7 +214,7 @@ export const UpSpeedWithIcon = (): JSX.Element => {
   return (
     <SpeedWithIcon
       label="Upload"
-      value={upSpeed}
+      value={String(upSpeed)}
       icon={
         <>
           <UploadInlineIcon size="1.2rem" />
@@ -231,7 +231,7 @@ export const DownSpeedWithIcon = (): JSX.Element => {
   return (
     <SpeedWithIcon
       label="Download"
-      value={downSpeed}
+      value={String(downSpeed)}
       icon={
         <>
           <DownloadInlineIcon size="1.2rem" />
