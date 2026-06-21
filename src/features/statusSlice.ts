@@ -1,6 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { cloneDeep, omit } from 'lodash';
-import { logLineToAppSide } from '../../ipcNode';
 import { StatusErrorType } from '../../sharedIpc';
 import { appendToAppLogsOutsideRedux } from '../app/app';
 import {
@@ -8,7 +7,7 @@ import {
   SpeedHistoryDataType
 } from '../app/components/tabs/SpeedChart';
 import { getSavedExitNodesFromSettings } from '../app/config';
-import { RootState, store } from '../app/store';
+import { RootState } from '../app/store';
 import {
   DaemonSummaryStatus,
   defaultDaemonSummaryStatus

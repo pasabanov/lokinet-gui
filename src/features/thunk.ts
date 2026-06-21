@@ -142,8 +142,6 @@ function updateExitsSaved(exitNode: string) {
   store.dispatch(updateExitsFromSettings(existingFromSettings));
 }
 
-const MAX_RETRY_TIMEOUT = 11000;
-
 export const turnExitOn = async (
   exitNode?: string,
   authCode?: string
